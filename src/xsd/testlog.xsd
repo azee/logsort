@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="urn:beans.logsort.greatbit.ru"
+           targetNamespace="urn:beans.logsort.greatbit.ru"
+           elementFormDefault="qualified">
+
+    <xs:element name="TestLog" type="TestLog"/>
+    <xs:complexType name="TestLog">
+        <xs:sequence>
+            <xs:element name="TestLogItem" type="TestLogItem" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="TestLogItem" type="TestLogItem"/>
+    <xs:complexType name="TestLogItem">
+        <xs:sequence>
+            <xs:element name="Type" type="xs:string"/>
+            <xs:element name="Message" type="xs:string"/>
+            <xs:element name="Time" type="xs:string"/>
+            <xs:element name="Priority" type="xs:string"/>
+            <xs:element name="HasPicture" type="xs:string"/>
+            <xs:element name="TypeDescription" type="xs:string"/>
+            <xs:element name="Picture" type="Picture"/>
+            <xs:element name="CallStack" type="CallStack"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="Picture" type="Picture"/>
+    <xs:complexType name="Picture">
+        <xs:sequence>
+            <xs:element name="PictureItem" type="PictureItem" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="PictureItem" type="PictureItem"/>
+    <xs:complexType name="PictureItem">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="Picture" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="CallStack" type="CallStack"/>
+    <xs:complexType name="CallStack">
+        <xs:sequence>
+            <xs:element name="CallStackItem" type="CallStackItem" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="CallStackItem" type="CallStackItem"/>
+    <xs:complexType name="CallStackItem">
+        <xs:sequence>
+            <xs:element name="Type" type="xs:string"/>
+            <xs:element name="Test" type="xs:string"/>
+            <xs:element name="UnitName" type="xs:string"/>
+            <xs:element name="LineNo" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

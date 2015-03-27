@@ -38,8 +38,8 @@ public class MHTParser implements IConstants
             reader = new BufferedReader(new FileReader(mhtFile));
 
             final String boundary = getBoundary(reader);
-            if(boundary == null)
-                throw new Exception("Failed to find document 'boundary'... Aborting");
+//            if(boundary == null)
+//                throw new Exception("Failed to find document 'boundary'... Aborting");
 
             String line = null;
             int i = 1;

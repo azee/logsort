@@ -4,7 +4,7 @@
            targetNamespace="urn:beans.logsort.greatbit.ru"
            elementFormDefault="qualified">
 
-    <xs:element name="TestLog" type="TestLog"/>
+    <!--<xs:element name="TestLog" type="TestLog"/>-->
     <xs:complexType name="TestLog">
         <xs:sequence>
             <xs:element name="TestLogItem" type="TestLogItem" minOccurs="0" maxOccurs="unbounded"/>

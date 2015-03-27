@@ -4,8 +4,6 @@ import ru.greatbit.logsort.beans.TestLog;
 import ru.greatbit.logsort.mht.MHTParser;
 import ru.greatbit.utils.serialize.XmlSerializer;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

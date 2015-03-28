@@ -1,6 +1,7 @@
 package ru.greatbit.logsort;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import ru.greatbit.logsort.beans.*;
 import ru.greatbit.logsort.mht.MHTParser;
 import ru.greatbit.utils.serialize.XmlSerializer;
@@ -36,7 +37,7 @@ public class LogUtils {
         File tempDir = decompressMht(mht, sourceDir);
         TestLog testLog = parseTestLog(tempDir);
         FileUtils.deleteDirectory(tempDir);
-        return getResolution(testLog);
+        return getResolution(FilenameUtils.removeExtension(mht.getName()), testLog);
     }
 
     public TestLog parseTestLog(File tempDir) throws Exception {
@@ -72,14 +73,14 @@ public class LogUtils {
         return xlsRows;
     }
 
-    private Resolution getResolution(TestLog testLog) {
+    private Resolution getResolution(String testId, TestLog testLog) {
         boolean warningExists = false;
         TestLogItem warnLogItem = null;
 
 
         for (TestLogItem logItem : testLog.getTestLogItems()){
             if ("Error".equals(logItem.getTypeDescription())){
-                addXlsRow(logItem, Resolution.FAIL);
+                addXlsRow(testId, logItem, Resolution.FAIL);
                 return Resolution.FAIL;
             }
             if ("Warning".equals(logItem.getTypeDescription())){
@@ -91,17 +92,17 @@ public class LogUtils {
         }
 
         if (warningExists){
-            addXlsRow(warnLogItem, Resolution.WARNING);
+            addXlsRow(testId, warnLogItem, Resolution.WARNING);
             return Resolution.WARNING;
         }
 
-        addXlsRow(null, Resolution.PASS);
+        addXlsRow(testId, null, Resolution.PASS);
         return Resolution.PASS;
     }
 
-    private void addXlsRow(TestLogItem logItem, Resolution resolution){
+    private void addXlsRow(String testId, TestLogItem logItem, Resolution resolution){
         XlsRow xlsRow = new XlsRow()
-                .withId("Test Case Id")
+                .withId(testId)
                 .withName("Test Case Name")
                 .withResolution(resolution);
         if (logItem != null){

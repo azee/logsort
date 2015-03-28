@@ -49,22 +49,20 @@ public class XLSUtils {
     private void createRow(Workbook workbook, Sheet sheet, int rowNum, XlsRow xlsRow) {
         Row row = sheet.createRow(rowNum);
 
-
         CellStyle style = workbook.createCellStyle();
         if (xlsRow.getResolution() == Resolution.FAIL){
             style.setFillForegroundColor(HSSFColor.RED.index);
             style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
         }
         if (xlsRow.getResolution() == Resolution.WARNING){
-            style.setFillForegroundColor(HSSFColor.YELLOW.index);
+            style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
             style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
         }
         if (xlsRow.getResolution() == Resolution.PASS){
-            style.setFillForegroundColor(HSSFColor.GREEN.index);
+            style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
             style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
         }
-
-
+        
         Cell cell = row.createCell(0);
         cell.setCellStyle(style);
         cell.setCellValue(xlsRow.getId());

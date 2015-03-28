@@ -1,5 +1,7 @@
 package ru.greatbit.logsort;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -15,6 +17,10 @@ public class Main {
 
         LogUtils logUtils = new LogUtils();
         for (File mhtFile : outputDir.listFiles()){
+            if (!"mht".equals(FilenameUtils.getExtension(mhtFile.getName()))){
+                continue;
+            }
+
             //Move logs
             try {
                 logUtils.moveLog(mhtFile, outputDir);

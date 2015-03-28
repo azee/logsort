@@ -1,6 +1,8 @@
 package ru.greatbit.logsort;
 
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.greatbit.logsort.beans.XlsRow;
 
 import java.io.File;
@@ -16,23 +18,29 @@ public class Main {
 
     public static void main(String... args){
 
+        final Logger logger = LoggerFactory.getLogger(Main.class);
+
         File outputDir = new File(System.getProperty("user.dir"));
 
         LogUtils logUtils = new LogUtils();
         for (File mhtFile : outputDir.listFiles()){
+            logger.info("Processing " + mhtFile.getName());
+
             if (!"mht".equals(FilenameUtils.getExtension(mhtFile.getName()))){
                 continue;
             }
 
             //Move logs
             try {
+                logger.info("Moving " + mhtFile.getName());
                 logUtils.moveLog(mhtFile, outputDir);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(String.format("Couldn't move file %s", mhtFile.getName()), e);
             }
         }
 
         try {
+            logger.info("Xls file creation started");
             List<XlsRow> rows = logUtils.getXlsRows();
             Collections.sort(rows, new Comparator<XlsRow>() {
                 @Override
@@ -42,7 +50,7 @@ public class Main {
             });
             new XLSUtils().createXls(outputDir, rows);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Couldn't create xls file", e);
         }
     }
 }

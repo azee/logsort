@@ -2,13 +2,13 @@ package ru.greatbit.logsort;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.xml.sax.SAXException;
 import ru.greatbit.logsort.beans.*;
 import ru.greatbit.logsort.mht.MHTParser;
 import ru.greatbit.utils.serialize.XmlSerializer;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import javax.xml.bind.JAXBException;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +19,7 @@ import java.util.UUID;
 public class LogUtils {
 
     private final static String logFile = "testlog.xml";
+    private final static String rootData = "root.xml";
 
     List<XlsRow> xlsRows = new LinkedList<>();
 
@@ -36,8 +37,9 @@ public class LogUtils {
     public Resolution getResolution(File mht, File sourceDir) throws Exception {
         File tempDir = decompressMht(mht, sourceDir);
         TestLog testLog = parseTestLog(tempDir);
+        Resolution resolution = getResolution(FilenameUtils.removeExtension(mht.getName()), testLog, getCaseName(tempDir));
         FileUtils.deleteDirectory(tempDir);
-        return getResolution(FilenameUtils.removeExtension(mht.getName()), testLog);
+        return resolution;
     }
 
     public TestLog parseTestLog(File tempDir) throws Exception {
@@ -73,14 +75,14 @@ public class LogUtils {
         return xlsRows;
     }
 
-    private Resolution getResolution(String testId, TestLog testLog) {
+    private Resolution getResolution(String testId, TestLog testLog, String testName) {
         boolean warningExists = false;
         TestLogItem warnLogItem = null;
 
 
         for (TestLogItem logItem : testLog.getTestLogItems()){
             if ("Error".equals(logItem.getTypeDescription())){
-                addXlsRow(testId, logItem, Resolution.FAIL);
+                addXlsRow(testId, testName, logItem, Resolution.FAIL);
                 return Resolution.FAIL;
             }
             if ("Warning".equals(logItem.getTypeDescription())){
@@ -92,18 +94,18 @@ public class LogUtils {
         }
 
         if (warningExists){
-            addXlsRow(testId, warnLogItem, Resolution.WARNING);
+            addXlsRow(testId, testName, warnLogItem, Resolution.WARNING);
             return Resolution.WARNING;
         }
 
-        addXlsRow(testId, null, Resolution.PASS);
+        addXlsRow(testId, testName, null, Resolution.PASS);
         return Resolution.PASS;
     }
 
-    private void addXlsRow(String testId, TestLogItem logItem, Resolution resolution){
+    private void addXlsRow(String testId, String testName, TestLogItem logItem, Resolution resolution){
         XlsRow xlsRow = new XlsRow()
                 .withId(testId)
-                .withName("Test Case Name")
+                .withName(testName)
                 .withResolution(resolution);
         if (logItem != null){
             List<CallStackItem> stackItems = logItem.getCallStack().getCallStackItems();
@@ -113,6 +115,26 @@ public class LogUtils {
                     .withLine(line);
         }
         xlsRows.add(xlsRow);
+    }
+
+    private String getCaseName(File tempDir) throws IOException, JAXBException, SAXException {
+        String logPath = tempDir.getAbsolutePath() + File.separator + rootData;
+        //filename is filepath string
+        BufferedReader br = new BufferedReader(new FileReader(new File(logPath)));
+        String line;
+        StringBuilder sb = new StringBuilder();
+
+        while((line = br.readLine())!= null){
+            sb.append(line.trim());
+        }
+
+        String log = sb.toString()
+                .replace("<LogData", "<ns2:LogData xmlns:ns2=\"beans.logsort.greatbit.ru\" xmlns=\"urn:beans.logsort.greatbit.ru\"")
+                .replace("</LogData>", "</ns2:LogData>");
+
+        LogData logData = XmlSerializer.unmarshal(log, LogData.class);
+
+        return logData.getName().split("\\\\")[1].replace("]", "");
     }
 
 }

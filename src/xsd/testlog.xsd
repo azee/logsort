@@ -4,6 +4,13 @@
            targetNamespace="urn:beans.logsort.greatbit.ru"
            elementFormDefault="qualified">
 
+    <xs:complexType name="LogData">
+        <xs:attribute name="name" type="xs:string"/>
+        <!--<xs:sequence>-->
+            <!--<xs:element name="Provider" type="xs:anyType"/>-->
+        <!--</xs:sequence>-->
+    </xs:complexType>
+
     <xs:complexType name="TestLog">
         <xs:sequence>
             <xs:element name="TestLogItem" type="TestLogItem" minOccurs="0" maxOccurs="unbounded"/>

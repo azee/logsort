@@ -14,4 +14,15 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:element name="XlsRow" type="XlsRow"/>
+    <xs:complexType name="XlsRow">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="resolution" type="Resolution"/>
+            <xs:element name="message" type="xs:string"/>
+            <xs:element name="line" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
 </xs:schema>

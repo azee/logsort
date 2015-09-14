@@ -14,6 +14,8 @@ import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by azee on 26.03.15.
@@ -54,7 +56,7 @@ public class LogUtils {
     }
 
     public TestLog parseTestLog(File tempDir) throws Exception {
-        String logPath = tempDir.getAbsolutePath() + File.separator + logFile;
+        String logPath = tempDir.getAbsolutePath() + File.separator + getXmlLogFileName(tempDir);
         //filename is filepath string
         BufferedReader br = new BufferedReader(new FileReader(new File(logPath)));
         String line;
@@ -150,6 +152,22 @@ public class LogUtils {
         br.close();
 
         return logData.getName().split("\\\\")[1].replace("]", "");
+    }
+
+    private String getXmlLogFileName(File tempDir) {
+        File dir = new File(tempDir + File.separator);
+        for (File file : dir.listFiles()) {
+            if (file.isFile() && logXmlFileNameMatch(file.getName())) {
+                return file.getName();
+            }
+        }
+        return logFile;
+    }
+
+    private boolean logXmlFileNameMatch(String name) {
+        Pattern pattern = Pattern.compile("_testlog.xml$");
+        Matcher matcher = pattern.matcher(name);
+        return matcher.find();
     }
 
 }

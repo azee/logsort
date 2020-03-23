@@ -152,6 +152,16 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.10.0</version>
+                <configuration>
+                    <resultsDirectory>allure</resultsDirectory>
+                    <buildDirectory>.</buildDirectory>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>

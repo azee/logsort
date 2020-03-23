@@ -88,7 +88,7 @@ public class LogUtils {
         if(!destinDir.exists()){
             destinDir.mkdir();
         }
-        File outputFile = new File(destinDir.getAbsolutePath()  + File.separator + testResult.getFullName() + ".json");
+        File outputFile = new File(destinDir.getAbsolutePath()  + File.separator + testResult.getFullName() + "-result.json");
         BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
         writer.write(JsonSerializer.marshal(testResult));
         writer.close();

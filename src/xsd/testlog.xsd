@@ -28,6 +28,7 @@
             <xs:element name="TypeDescription" type="xs:string"/>
             <xs:element name="Picture" type="Picture"/>
             <xs:element name="CallStack" type="CallStack"/>
+            <xs:element name="TimeDiffsec" type="xs:int"/>
         </xs:sequence>
     </xs:complexType>
 

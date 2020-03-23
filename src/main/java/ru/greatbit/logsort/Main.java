@@ -10,25 +10,29 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by azee on 26.03.15.
  */
 public class Main {
 
-    public static void main(String... args){
+    public static void main(String... args) throws Exception {
 
         final Logger logger = LoggerFactory.getLogger(Main.class);
 
         File outputDir = new File(System.getProperty("user.dir"));
 
         LogUtils logUtils = new LogUtils();
+        String runUuid = UUID.randomUUID().toString();
         for (File mhtFile : outputDir.listFiles()){
             logger.info("Processing " + mhtFile.getName());
 
             if (!"mht".equals(FilenameUtils.getExtension(mhtFile.getName()))){
                 continue;
             }
+
+            logUtils.getAllureTestResult(mhtFile, outputDir, runUuid);
 
             //Move logs
             try {

@@ -34,6 +34,13 @@
             <version>3.11</version>
         </dependency>
 
+        <!-- Allure -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-model</artifactId>
+            <version>2.13.2</version>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -55,8 +62,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
 

@@ -1,0 +1,48 @@
+{
+  "name": "uploadFileTest[3]",
+  "status": "passed",
+  "stage": "finished",
+  "steps": [],
+  "attachments": [],
+  "parameters": [],
+  "start": 1584350642717,
+  "stop": 1584350654479,
+  "uuid": "1c83e9c0-1dd4-4a70-a796-aeae6bd222f4",
+  "historyId": "8c1a5ea2bd3c717ddb62e17166765855",
+  "fullName": "com.certara.integral.api.tests.UploadFileTest.uploadFileTest[3]",
+  "labels": [
+    {
+      "name": "package",
+      "value": "com.certara.integral.api.tests"
+    },
+    {
+      "name": "testClass",
+      "value": "com.certara.integral.api.tests.UploadFileTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "uploadFileTest[3]"
+    },
+    {
+      "name": "suite",
+      "value": "com.certara.integral.api.tests.UploadFileTest"
+    },
+    {
+      "name": "host",
+      "value": "88e9fe7bc5cb.ant.amazon.com"
+    },
+    {
+      "name": "thread",
+      "value": "66919@88e9fe7bc5cb.ant.amazon.com.main(1)"
+    },
+    {
+      "name": "framework",
+      "value": "junit4"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    }
+  ],
+  "links": []
+}

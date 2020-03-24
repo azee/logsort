@@ -80,7 +80,6 @@ public class LogUtils {
 
         testResult.getSteps().addAll(
                 testLog.getTestLogItems().stream().
-                        filter(logItem -> MESSAGE_TYPE.equals(logItem.getTypeDescription())).
                         map(LogUtils::convertToStepResult).collect(toList())
         );
 
@@ -113,8 +112,13 @@ public class LogUtils {
         StepResult stepResult = new StepResult();
         stepResult.setName(logItem.getMessage());
         stepResult.setStart(getDateTime(logItem.getTime()));
-        stepResult.setStop(stepResult.getStart() + logItem.getTimeDiffsec() * 1000);
+        stepResult.setStop(stepResult.getStart() + Math.round(logItem.getTimeDiffsec() * 1000));
 
+        if ("Error".equals(logItem.getTypeDescription()) || "Warning".equals(logItem.getTypeDescription())){
+            stepResult.setStatus(Status.FAILED);
+        } else {
+            stepResult.setStatus(Status.PASSED);
+        }
         return stepResult;
     }
 

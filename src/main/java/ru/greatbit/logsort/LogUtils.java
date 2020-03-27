@@ -44,7 +44,7 @@ public class LogUtils {
 
     List<XlsRow> xlsRows = new LinkedList<XlsRow>();
 
-    public TestResult getAllureTestResult(File mht, File sourceDir, String uuid) throws Exception {
+    public TestResult getAllureTestResult(File mht, File sourceDir, String historyId) throws Exception {
         logger.debug(String.format("Decompressing %s", mht.getName()));
         File tempDir = decompressMht(mht, sourceDir);
 
@@ -55,7 +55,7 @@ public class LogUtils {
         logger.debug(String.format("Got resolution %s for %s", resolution, mht.getName()));
 
         TestResult testResult = new TestResult();
-        testResult.setUuid(uuid);
+//        testResult.setHistoryId(historyId);
         testResult.setStage(Stage.FINISHED);
 
         testResult.setStart(getDateTime(testLog.getTestLogItems().get(0).getTime()));
@@ -68,6 +68,8 @@ public class LogUtils {
         String[] testcaseNameTokens = testResult.getName().split("_");
         testResult.setTestCaseId(testcaseNameTokens.length == 1 ? testcaseNameTokens[0] : testcaseNameTokens[1]);
 
+        testResult.setUuid(testResult.getName());
+
         Label framework = new Label();
         framework.setName("framework");
         framework.setValue("TestComplete");
@@ -77,6 +79,11 @@ public class LogUtils {
         language.setName("language");
         language.setValue("VisualBasicScript");
         testResult.getLabels().add(language);
+
+        Label feature = new Label();
+        feature.setName("feature");
+        feature.setValue(testcaseNameTokens[0]);
+        testResult.getLabels().add(feature);
 
         testResult.getSteps().addAll(
                 testLog.getTestLogItems().stream().
@@ -227,10 +234,12 @@ public class LogUtils {
                 .withResolution(resolution);
         if (logItem != null){
             List<CallStackItem> stackItems = logItem.getCallStack().getCallStackItems();
-            String line = stackItems.get(stackItems.size() - 1).getLineNo();
-            xlsRow
-                    .withMessage(logItem.getMessage())
-                    .withLine(line);
+            if (stackItems.size() > 0){
+                String line = stackItems.get(stackItems.size() - 1).getLineNo();
+                xlsRow
+                        .withMessage(logItem.getMessage())
+                        .withLine(line);
+            }
         }
         xlsRows.add(xlsRow);
     }
